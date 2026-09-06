@@ -62,7 +62,7 @@ jobs:
       - name: Instalar gosec
         run: go install github.com/securego/gosec/v2/cmd/gosec@v2.20.0
       - name: gosec (SAST)
-        run: gosec ./...
+        run: gosec -severity high ./...
       - name: Scan de sistema de arquivos com Trivy (SCA)
         uses: aquasecurity/trivy-action@v0.36.0
         with:

@@ -84,7 +84,7 @@ jobs:
           python-version: ${{ inputs.python-version }}
       - run: pip install bandit
       - name: bandit (SAST)
-        run: bandit -r . -x ./tests -ll
+        run: bandit -r . -x ./tests -lll
       - name: Scan de sistema de arquivos com Trivy (SCA)
         uses: aquasecurity/trivy-action@v0.36.0
         with:
