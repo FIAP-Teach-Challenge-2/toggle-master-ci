@@ -1,18 +1,18 @@
 # toggle-master-ci
 
-Reusable GitHub Actions CI/DevSecOps workflows shared by the 5 ToggleMaster
-microservices (`auth-service`, `flag-service`, `targeting-service`,
-`evaluation-service`, `analytics-service`).
+Workflows reutilizáveis do GitHub Actions para CI/DevSecOps, compartilhados
+pelos 5 microsserviços do ToggleMaster (`auth-service`, `flag-service`,
+`targeting-service`, `evaluation-service`, `analytics-service`).
 
 ## Workflows
 
 ### `reusable-ci-go.yml`
 
-For Go services. Jobs: lint (golangci-lint) → test (go build + go test) →
-security-scan (gosec + Trivy fs) → docker-build-push (Trivy image scan,
-push to ECR on `main` only).
+Para serviços em Go. Jobs: lint (golangci-lint) → test (go build + go
+test) → security-scan (gosec + Trivy fs) → docker-build-push (scan de
+imagem com Trivy, push para o ECR apenas na `main`).
 
-Usage from a service repo's `.github/workflows/ci.yml`:
+Uso a partir do `.github/workflows/ci.yml` de um repositório de serviço:
 
 ```yaml
 name: CI Pipeline - <service-name>
@@ -34,11 +34,12 @@ jobs:
 
 ### `reusable-ci-python.yml`
 
-For Python/Flask services. Same 4 jobs, Python tooling (flake8, bandit,
-pytest). Extra input `needs-postgres` (boolean, default `false`) loads
-`db/init.sql` into a Postgres service container before running tests —
-set it to `true` for services whose app connects to Postgres at import
-time (`flag-service`, `targeting-service`).
+Para serviços Python/Flask. Os mesmos 4 jobs, com ferramentas Python
+(flake8, bandit, pytest). Input extra `needs-postgres` (boolean, padrão
+`false`) carrega o `db/init.sql` em um container de serviço Postgres antes
+de rodar os testes — defina como `true` para serviços cuja aplicação se
+conecta ao Postgres na importação do módulo (`flag-service`,
+`targeting-service`).
 
 ```yaml
 jobs:
@@ -51,8 +52,9 @@ jobs:
     secrets: inherit
 ```
 
-## Required secrets (set on each calling repo)
+## Secrets necessários (configurados em cada repositório que chama o workflow)
 
-`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` — AWS
-Academy temporary credentials. Must be refreshed whenever the Academy lab
-session restarts. See `COORDENACAO.md` for who needs to set these.
+`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` —
+credenciais temporárias da AWS Academy. Precisam ser atualizadas sempre
+que a sessão do Lab Academy reiniciar. Veja `COORDENACAO.md` (adicionado
+em uma tarefa posterior) para saber quem precisa configurar esses secrets.
