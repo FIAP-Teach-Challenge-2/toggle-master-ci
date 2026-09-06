@@ -73,3 +73,20 @@ Essas credenciais expiram quando a sessão do AWS Academy Lab é reiniciada
 — vão precisar ser atualizadas de tempos em tempos enquanto o desafio
 estiver em andamento. Quem tem admin nos 5 repositórios, por favor avisar
 para combinarmos isso.
+
+## Aprovação de execução dos workflows (importante)
+
+Cada uma das 5 Pull Requests que abri introduz um arquivo de workflow
+(`.github/workflows/ci.yml`) totalmente novo no repositório. Por
+segurança, o GitHub não deixa esse workflow rodar automaticamente quando
+vem de uma PR de fork — é preciso que alguém com acesso de **maintainer**
+no repositório entre na aba "Checks" da PR e clique em "Approve and run
+workflow" (esse botão só aparece depois que um maintainer olha a PR; até
+lá, nem existe uma execução pendente para aprovar — o pipeline fica sem
+nenhum check, silenciosamente).
+
+Sem esse clique, a pipeline nunca roda — não é um bug do código, é uma
+trava de segurança do GitHub para PRs vindas de forks. Isso é necessário
+nas 5 PRs (`auth-service`, `flag-service`, `targeting-service`,
+`evaluation-service`, `analytics-service`), além da configuração dos
+secrets AWS mencionada acima.
