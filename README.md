@@ -15,7 +15,7 @@ imagem com Trivy, push para o ECR apenas na `main`).
 Uso a partir do `.github/workflows/ci.yml` de um repositório de serviço:
 
 ```yaml
-name: CI Pipeline - <service-name>
+name: Pipeline de CI - <service-name>
 
 on:
   push:
@@ -29,7 +29,10 @@ jobs:
     with:
       service-name: <service-name>
       ecr-repository: togglemaster/<service-name>
-    secrets: inherit
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 ```
 
 ### `reusable-ci-python.yml`
@@ -49,12 +52,15 @@ jobs:
       service-name: <service-name>
       ecr-repository: togglemaster/<service-name>
       needs-postgres: true
-    secrets: inherit
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 ```
 
 ## Secrets necessários (configurados em cada repositório que chama o workflow)
 
 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` —
 credenciais temporárias da AWS Academy. Precisam ser atualizadas sempre
-que a sessão do Lab Academy reiniciar. Veja `COORDENACAO.md` (adicionado
-em uma tarefa posterior) para saber quem precisa configurar esses secrets.
+que a sessão do Lab Academy reiniciar. Veja `COORDENACAO.md` para saber
+quem precisa configurar esses secrets.
