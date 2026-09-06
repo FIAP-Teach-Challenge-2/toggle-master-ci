@@ -20,6 +20,8 @@ on:
         required: true
       AWS_SESSION_TOKEN:
         required: true
+      GITOPS_TOKEN:
+        required: false
 
 env:
   AWS_REGION: us-east-1
@@ -76,6 +78,8 @@ jobs:
     name: Build, Scan e Push da Imagem Docker
     runs-on: ubuntu-latest
     needs: [lint, test, security-scan]
+    outputs:
+      image: ${{ steps.ecr-login.outputs.registry }}/${{ inputs.ecr-repository }}
     steps:
       - uses: actions/checkout@v4
 
@@ -118,3 +122,15 @@ jobs:
             echo "**Serviço**: ${{ inputs.service-name }}"
             echo "**Tag**: ${{ github.sha }}"
           } >> "$GITHUB_STEP_SUMMARY"
+
+  gitops:
+    name: Atualiza tag no GitOps
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [docker-build-push]
+    uses: FIAP-Teach-Challenge-2/toggle-master-infra/.github/workflows/gitops-bump.yml@main
+    with:
+      service: ${{ inputs.service-name }}
+      image: ${{ needs.docker-build-push.outputs.image }}
+      tag: ${{ github.sha }}
+    secrets:
+      GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
