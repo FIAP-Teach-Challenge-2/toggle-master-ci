@@ -86,7 +86,7 @@ jobs:
       - name: bandit (SAST)
         run: bandit -r . -x ./tests -ll
       - name: Scan de sistema de arquivos com Trivy (SCA)
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .
@@ -105,7 +105,7 @@ jobs:
         run: docker build -t ${{ inputs.service-name }}:${{ github.sha }} .
 
       - name: Scan de imagem com Trivy
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ${{ inputs.service-name }}:${{ github.sha }}
           severity: CRITICAL
