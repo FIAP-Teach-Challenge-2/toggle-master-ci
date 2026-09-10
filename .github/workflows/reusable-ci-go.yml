@@ -62,7 +62,7 @@ jobs:
         with:
           go-version: ${{ inputs.go-version }}
       - name: Instalar gosec
-        run: go install github.com/securego/gosec/v2/cmd/gosec@v2.20.0
+        run: go install github.com/securego/gosec/v2/cmd/gosec@latest
       - name: gosec (SAST)
         run: gosec -severity high ./...
       - name: Scan de sistema de arquivos com Trivy (SCA)
